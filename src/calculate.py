@@ -26,10 +26,12 @@ def calc(expr):
                 case '*':
                     res = op2 * op1
                 case '**':
-                    if op2 != 0 or op1 >= 0: # Проверка на то, что ноль не возводится в отрицательную степень (то же деление на 0)
-                        res = op2 ** op1
+                    if op2 < 0 and not op1.is_integer(): # Проверка на возведение отрицательных чисел в не целую степень
+                        raise ValueError(f'Cannot get negative number in float power for real numbers ({op2} to {op1} power)')
+                    elif op2 == 0 and op1 < 0: # Проверка на возведение нуля в отрицательную степень
+                        raise ValueError(f'Cannot raise zero in negative power ({op1})')
                     else:
-                        raise ValueError('Zero to negative power')
+                        res = op2 ** op1
                 case '/':
                     if op1 != 0: # Проверка деления на 0
                         res = op2 / op1

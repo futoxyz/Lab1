@@ -26,7 +26,10 @@ def calc(expr):
                 case '*':
                     res = op2 * op1
                 case '**':
-                    res = op2 ** op1
+                    if op2 != 0 or op1 >= 0: # Проверка на то, что ноль не возводится в отрицательную степень (то же деление на 0)
+                        res = op2 ** op1
+                    else:
+                        raise ValueError('Zero to negative power')
                 case '/':
                     if op1 != 0: # Проверка деления на 0
                         res = op2 / op1

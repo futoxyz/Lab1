@@ -23,17 +23,17 @@ def get_token(expr): # Создание списка токенов
         except:
             raise SyntaxError('Invalid "~" input')
     while '(' in tokens:
-        try: # Корректная открывающая скобка должна: иметь два идущих после неё числа (унарные операции уже проведены), затем оператор и закрывающая скобка. При любом расхождении -> вызов ошибки
-            float(tokens[tokens.index('(') + 1])
-            float(tokens[tokens.index('(') + 2])
-            if tokens[tokens.index('(') + 3] in OPERATORS and tokens[tokens.index('(') + 4] == ')':
-                tokens.remove('(') # Верные скобки никак не влияют на выражение в RPN, поэтому удаляем
+        stack = []
+        for tok in tokens: # Проверка закрытия каждой скобки при наличии
+            if tok == '(':
+                stack.append(tok) # Открывающая скобка добавляется в стек
+                tokens.remove('(')
+            if tok == ')' and stack:
+                stack.pop() # Закрывающая скобка вытаскивает скобку из стека
                 tokens.remove(')')
-            else:
-                raise SyntaxError('Invalid brackets')
-        except:
-            raise SyntaxError('Invalid brackets')
+        if stack:
+            raise SyntaxError('Invalid brackets') # Если стек не остался пустым - есть незакрытые скобки
     if ')' in tokens:
-        raise SyntaxError('Invalid brackets') # После предыдущего цикла while открывающих скобок в токенах остаться не могло, значит если осталась хоть одна закрывающая скобка, то она и не открыта -> вызов ошибки
+        raise SyntaxError('Invalid brackets') # Предыдущий цикл гарантированно удаляет все открывающиеся скобки (или выдает ошибку), поэтому доп. проверка на закрывающиеся
     print(tokens)
     return tokens # В списке токенов есть только числа и операторы независимо от ввода (либо была бы вызвана ошибка, либо преобразовано)

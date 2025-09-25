@@ -3,8 +3,12 @@ from sys import stdin
 
 
 def main():
+    """
+    Запуск программы
+    :return: Данная функция ничего не возвращает
+    """
     for line in stdin:
-        calc(line.rstrip())
+        print(calc(line.rstrip()))
 
 
 if __name__ == "__main__":

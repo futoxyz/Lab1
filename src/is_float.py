@@ -1,4 +1,9 @@
-def is_float(tok): # Проверка: является ли входящий токен "tok" числом. Возврат - True/False
+def is_float(tok):
+    """
+    Проверяет, является ли токен числом
+    :param tok: Токен
+    :return: True/False
+    """
     try:
         float(tok)
     except:

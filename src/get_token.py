@@ -3,37 +3,41 @@ from src.correction import correction
 from src.constants import OPERATORS, UNARY, BRACKETS
 
 
-def get_token(expr): # Создание списка токенов
+def get_token(expr):
+    """
+    Создает из выражения список токенов для вычисления. Список содержит лишь числа и операторы
+    :param expr: Выражение
+    :return: Список токенов
+    """
     tokens = []
     for tok in expr:
         if is_float(tok) or tok in OPERATORS or tok in UNARY or tok in BRACKETS:
-            tokens.append(tok) # Добавляем в список токенов (будущий стек) всё, что на вводе было указано верно: числа, операторы, унарные знаки, скобки
+            tokens.append(tok)
         else:
-            tokens += correction(tok) # Всё, что не указано идеально идёт на исправление
+            tokens += correction(tok)
     while '$' in tokens:
         try:
-            tokens[tokens.index('$') - 1] = float(tokens[tokens.index('$') - 1]) # Применяем унарный + сразу в токенизаторе
+            tokens[tokens.index('$') - 1] = float(tokens[tokens.index('$') - 1])
             tokens.remove('$')
         except:
             raise SyntaxError('Invalid "$" input')
     while '~' in tokens:
         try:
-            tokens[tokens.index('~') - 1] = (-1) * float(tokens[tokens.index('~') - 1]) # Применяем унарный - сразу в токенизаторе
+            tokens[tokens.index('~') - 1] = (-1) * float(tokens[tokens.index('~') - 1])
             tokens.remove('~')
         except:
             raise SyntaxError('Invalid "~" input')
     while '(' in tokens:
         stack = []
-        for tok in tokens: # Проверка закрытия каждой скобки при наличии
+        for tok in tokens:
             if tok == '(':
-                stack.append(tok) # Открывающая скобка добавляется в стек
+                stack.append(tok)
                 tokens.remove('(')
             if tok == ')' and stack:
-                stack.pop() # Закрывающая скобка вытаскивает скобку из стека
+                stack.pop()
                 tokens.remove(')')
         if stack:
-            raise SyntaxError('Invalid brackets') # Если стек не остался пустым - есть незакрытые скобки
+            raise SyntaxError('Invalid brackets')
     if ')' in tokens:
-        raise SyntaxError('Invalid brackets') # Предыдущий цикл гарантированно удаляет все открывающиеся скобки (или выдает ошибку), поэтому доп. проверка на закрывающиеся
-    print(tokens)
-    return tokens # В списке токенов есть только числа и операторы независимо от ввода (либо была бы вызвана ошибка, либо преобразовано)
+        raise SyntaxError('Invalid brackets')
+    return tokens

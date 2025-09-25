@@ -3,10 +3,17 @@ from src.constants import OPERATORS, UNARY, BRACKETS
 
 
 def correction(tok):
-    if '(' in tok: # В циклах ниже ищем "склеившиеся" операторы и знаки
+    """
+    Проверка не введенных идеально токенов (отдельно через пробел). Проверяет и наличие лишних символов
+    :param tok: Отдельное выражение (либо не разделенные токены, либо содержащее лишние символы)
+    :return: Правильный для обработки список токенов
+    """
+    if '(' in tok:
         tok = tok.replace('(', ' ( ')
     if ')' in tok:
         tok = tok.replace(')', ' ) ')
+    if ',' in tok:
+        tok = tok.replace(',', '.')
     if '**' in tok:
         tok = tok.replace('**', ' ** ')
     if '~' in tok:
@@ -28,5 +35,5 @@ def correction(tok):
     tok = tok.split()
     for part in tok:
         if not (part in OPERATORS  or part in UNARY or part in BRACKETS or is_float(part)):
-            raise SyntaxError(f"Wrong input: {part}") # Наличие лишних символов
+            raise SyntaxError(f"Wrong input: {part}")
     return tok

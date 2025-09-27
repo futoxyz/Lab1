@@ -9,6 +9,7 @@ def get_token(expr):
     :param expr: Выражение
     :return: Список токенов
     """
+    expr = expr.split()
     tokens = []
     for tok in expr:
         if is_float(tok) or tok in OPERATORS or tok in UNARY or tok in BRACKETS:

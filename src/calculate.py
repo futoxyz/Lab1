@@ -8,7 +8,7 @@ def calc(expr):
     :return: Результат вычисления
     """
     stack = []
-    for tok in get_token(expr.split()):
+    for tok in get_token(expr):
         if is_float(tok):
             stack.append(float(tok))
         else:

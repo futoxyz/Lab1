@@ -1,6 +1,6 @@
 from src.is_float import is_float
 from src.correction import correction
-from src.constants import OPERATORS, UNARY, BRACKETS
+from src.constants import ALL_TOKENS
 
 
 def get_token(expr):
@@ -12,7 +12,7 @@ def get_token(expr):
     expr = expr.split()
     tokens = []
     for tok in expr:
-        if is_float(tok) or tok in OPERATORS or tok in UNARY or tok in BRACKETS:
+        if is_float(tok) or tok in ALL_TOKENS:
             tokens.append(tok)
         else:
             tokens += correction(tok)
